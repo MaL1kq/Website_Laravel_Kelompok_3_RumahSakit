@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cari Dokter & Jadwal Praktek - RS Graha Medika</title>
+  <meta name="description" content="Temukan dokter spesialis terpercaya Anda dan periksa jadwal praktek mingguan ter-update di RS Graha Medika.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fa-solid fa-phone"></i> IGD 24 Jam: (021) 5555-7777</span>
+        <span><i class="fa-solid fa-envelope"></i> info@grahamedika.com</span>
+      </div>
+      <div class="topbar-socials">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Youtube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER & NAVIGATION -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+        <div class="logo-text">
+          Graha Medika
+          <span>Rumah Sakit</span>
+        </div>
+      </a>
+      
+      <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Beranda</a></li>
+        <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+        <li><a href="layanan.html" class="nav-link">Layanan</a></li>
+        <li><a href="dokter.html" class="nav-link active">Dokter</a></li>
+        <li><a href="kontak.html" class="nav-link">Hubungi Kami</a></li>
+        <li class="nav-btn"><a href="reservasi.html" class="btn btn-primary">Reservasi</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER BANNER -->
+  <section class="hero" style="padding: 4rem 0 3rem 0; text-align: center;">
+    <div class="container" style="z-index: 2; position: relative;">
+      <span class="badge">Direktori Dokter</span>
+      <h1 class="hero-title" style="font-size: 2.75rem; margin-bottom: 0.5rem;">Cari Dokter & Jadwal</h1>
+      <p style="max-width: 600px; margin: 0 auto; color: var(--text-medium);">
+        Temukan jadwal praktek dokter spesialis anak, kandungan, penyakit dalam, jantung, bedah, dan gigi di RS Graha Medika.
+      </p>
+    </div>
+    <div class="hero-bg-shapes">
+      <div class="shape shape-1" style="top: -150px; right: 0;"></div>
+    </div>
+  </section>
+
+  <!-- DOCTOR DIRECTORY CONTAINER -->
+  <section class="section-padding">
+    <div class="container">
+      
+      <!-- Filter and Search Bar Wrapper -->
+      <div class="doctor-search-wrapper">
+        <div class="search-form-grid">
+          <!-- Search input -->
+          <div class="form-group">
+            <label for="searchDoctorName">Cari Nama Dokter</label>
+            <div style="position: relative;">
+              <input type="text" id="searchDoctorName" class="input-style" placeholder="Tulis nama dokter, misal: dr. Adrian..." style="padding-left: 2.5rem;">
+              <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+          
+          <!-- Polyclinic Filter -->
+          <div class="form-group">
+            <label for="filterPolyclinic">Pilih Poliklinik / Spesialisasi</label>
+            <select id="filterPolyclinic" class="input-style">
+              <option value="all">Semua Poliklinik</option>
+              <option value="anak">Spesialis Anak (Pediatri)</option>
+              <option value="kandungan">Spesialis Kandungan & Kebidanan (OBGYN)</option>
+              <option value="dalam">Spesialis Penyakit Dalam</option>
+              <option value="jantung">Spesialis Jantung & Pembuluh Darah</option>
+              <option value="bedah">Spesialis Bedah Umum</option>
+              <option value="gigi">Dokter Gigi & Mulut</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctors Grid (Populated dynamically via app.js) -->
+      <div class="doctors-grid" id="doctorsGrid">
+        <!-- JS Fallback / Default Doctor cards (in case JS is disabled, they will still render nicely) -->
+        <div class="doctor-card">
+          <div class="doctor-avatar-box">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <div class="doctor-info-box">
+            <h3 class="doctor-name">Memuat Data Dokter...</h3>
+            <span class="doctor-spec">Harap aktifkan JavaScript</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-grid">
+      <!-- Col 1 -->
+      <div class="footer-col footer-about">
+        <a href="index.html" class="logo" style="margin-bottom: 1.5rem;">
+          <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto; filter: brightness(0) invert(1);">
+          <div class="logo-text" style="color: white;">
+            Graha Medika
+            <span style="color: rgba(255,255,255,0.6);">Rumah Sakit</span>
+          </div>
+        </a>
+        <p class="footer-desc">
+          RS Graha Medika bertekad menjadi penyedia layanan kesehatan terdepan yang terpercaya dalam aspek keamanan, kenyamanan, dan kualitas medis bagi seluruh lapisan masyarakat.
+        </p>
+      </div>
+      
+      <!-- Col 2 -->
+      <div class="footer-col">
+        <h3>Menu Utama</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="tentang.html">Tentang Kami</a></li>
+          <li><a href="layanan.html">Layanan Medis</a></li>
+          <li><a href="dokter.html">Jadwal Dokter</a></li>
+          <li><a href="reservasi.html">Reservasi Online</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3 -->
+      <div class="footer-col">
+        <h3>Layanan Unggulan</h3>
+        <ul class="footer-links">
+          <li><a href="layanan.html">Instalasi Gawat Darurat</a></li>
+          <li><a href="layanan.html">Poliklinik Spesialis</a></li>
+          <li><a href="layanan.html">Kamar Rawat Inap</a></li>
+          <li><a href="layanan.html">Laboratorium 24 Jam</a></li>
+          <li><a href="layanan.html">Rehabilitasi Medis</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4 -->
+      <div class="footer-col">
+        <h3>Hubungi Kami</h3>
+        <ul class="footer-contact">
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Jl. Graha Medika No. 88, Kav. 12-14, Jakarta Barat, DKI Jakarta, 11620</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>Call Center: (021) 5555-7777<br>IGD 24 Jam: (021) 5555-7777</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@grahamedika.com<br>marketing@grahamedika.com</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Rumah Sakit Graha Medika. Hak Cipta Dilindungi Undang-Undang.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="#">Peta Situs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL: DETAIL JAM PELAYANAN
+       ========================================================================== -->
+  <div class="modal-overlay" id="serviceHoursModal">
+    <div class="modal-box">
+      <button class="modal-close-btn flex-center" aria-label="Tutup modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3><i class="fa-regular fa-clock"></i> Jam Operasional & Pelayanan</h3>
+      </div>
+      <div class="modal-body">
+        <p>Berikut adalah rincian jam operasional pelayanan kesehatan di RS Graha Medika:</p>
+        
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Unit Pelayanan</th>
+              <th>Hari</th>
+              <th>Jam Operasional</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Instalasi Gawat Darurat (IGD)</strong></td>
+              <td>Senin - Minggu</td>
+              <td>24 Jam Non-stop</td>
+            </tr>
+            <tr>
+              <td><strong>Poliklinik Spesialis (Rawat Jalan)</strong></td>
+              <td>Senin - Sabtu</td>
+              <td>08:00 - 20:00 WIB</td>
+            </tr>
+            <tr>
+              <td><strong>Laboratorium Klinis & Radiologi</strong></td>
+              <td>Senin - Minggu</td>
+              <td>24 Jam Non-stop</td>
+            </tr>
+            <tr>
+              <td><strong>Farmasi/Apotek RS</strong></td>
+              <td>Senin - Minggu</td>
+              <td>24 Jam Non-stop</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: LAYANAN EMERGENCY IGD
+       ========================================================================== -->
+  <div class="modal-overlay" id="emergencyModal">
+    <div class="modal-box" style="border-top: 5px solid var(--danger);">
+      <button class="modal-close-btn flex-center" aria-label="Tutup modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3 style="color: var(--danger);"><i class="fa-solid fa-circle-exclamation"></i> Gawat Darurat & IGD 24 Jam</h3>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fa-solid fa-truck-medical" style="font-size: 4rem; color: var(--danger); margin-bottom: 1.5rem;"></i>
+        <h4 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: var(--secondary);">Butuh Bantuan Medis Segera?</h4>
+        <p style="max-width: 460px; margin: 0 auto 1.5rem auto;">
+          Hubungi Hotline Emergency IGD RS Graha Medika untuk penanganan medis darurat cepat atau penjemputan ambulans intensif.
+        </p>
+        
+        <div style="background-color: var(--danger-light); padding: 1.5rem; border-radius: var(--radius-md); border: 2px dashed var(--danger); display: inline-block; width: 100%; margin-bottom: 1.5rem;">
+          <span style="display: block; font-size: 0.85rem; text-transform: uppercase; color: var(--text-medium); font-weight: 600;">Nomor Telepon IGD Utama</span>
+          <a href="tel:02188889999" style="font-size: 2.25rem; font-weight: 800; color: var(--danger); font-family: var(--font-heading);">
+            (021) 5555-7777
+          </a>
+        </div>
+        
+        <button class="btn btn-dark" style="margin-top: 2rem; width: 100%;" onclick="closeModal('emergencyModal')">Tutup Jendela</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="database.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

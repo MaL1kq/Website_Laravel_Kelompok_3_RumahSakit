@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Akun Baru - RS Graha Medika</title>
+  <meta name="description" content="Daftarkan diri Anda sebagai pasien RS Graha Medika untuk kemudahan pembuatan janji temu dokter online.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background: linear-gradient(135deg, hsl(162, 30%, 96%) 0%, hsl(210, 30%, 96%) 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2.5rem 0;">
+
+  <div class="container" style="max-width: 580px; padding: 0 1rem;">
+    
+    <!-- Register Card -->
+    <div style="background-color: var(--bg-primary); border-radius: var(--radius-lg); padding: 3rem 2.5rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); width: 100%;">
+      
+      <!-- Logo -->
+      <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2rem; text-align: center;">
+                <a href="index.html" class="logo" style="margin-bottom: 0.75rem;">
+          <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+          <div class="logo-text">
+            Graha Medika
+            <span>Rumah Sakit</span>
+          </div>
+        </a>
+        <h2 style="font-size: 1.5rem; color: var(--secondary-dark); margin-top: 0.5rem;">Pendaftaran Akun Pasien</h2>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">Isi formulir pendaftaran di bawah ini untuk membuat akun baru</p>
+      </div>
+
+      <!-- Error Alert Box -->
+      <div id="errorAlert" style="display: none; background-color: var(--danger-light); border-left: 4px solid var(--danger); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; color: var(--danger); font-size: 0.85rem;">
+        <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i> <span id="errorText">Peringatan pesan error</span>
+      </div>
+
+      <form id="registerForm">
+        <!-- Full Name -->
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="regName">Nama Lengkap Pasien (Sesuai KTP)</label>
+          <div style="position: relative;">
+            <input type="text" id="regName" class="input-style" placeholder="Tulis nama lengkap Anda..." required style="padding-left: 2.5rem;">
+            <i class="fa-regular fa-user" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+          </div>
+        </div>
+
+        <!-- NIK and Date of Birth in a Grid -->
+        <div class="contact-form-grid" style="margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label for="regNik">Nomor NIK KTP (16 Digit)</label>
+            <div style="position: relative;">
+              <input type="text" id="regNik" class="input-style" placeholder="Tulis NIK..." required pattern="[0-9]{16}" title="NIK harus berupa 16 digit angka" style="padding-left: 2.5rem;">
+              <i class="fa-regular fa-id-card" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regDob">Tanggal Lahir</label>
+            <input type="date" id="regDob" class="input-style" required>
+          </div>
+        </div>
+
+        <!-- WhatsApp Phone and Email in a Grid -->
+        <div class="contact-form-grid" style="margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label for="regPhone">Nomor WhatsApp Aktif</label>
+            <div style="position: relative;">
+              <input type="tel" id="regPhone" class="input-style" placeholder="Contoh: 0812345..." required style="padding-left: 2.5rem;">
+              <i class="fa-brands fa-whatsapp" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Alamat Email</label>
+            <div style="position: relative;">
+              <input type="email" id="regEmail" class="input-style" placeholder="email@contoh.com" required style="padding-left: 2.5rem;">
+              <i class="fa-regular fa-envelope" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Password and Confirm Password in a Grid -->
+        <div class="contact-form-grid" style="margin-bottom: 1.5rem;">
+          <div class="form-group">
+            <label for="regPassword">Kata Sandi (Min 6 Karakter)</label>
+            <div style="position: relative;">
+              <input type="password" id="regPassword" class="input-style" placeholder="Buat kata sandi..." required minlength="6" style="padding-left: 2.5rem;">
+              <i class="fa-solid fa-lock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="regPasswordConfirm">Konfirmasi Kata Sandi</label>
+            <div style="position: relative;">
+              <input type="password" id="regPasswordConfirm" class="input-style" placeholder="Tulis ulang..." required minlength="6" style="padding-left: 2.5rem;">
+              <i class="fa-solid fa-check" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 0.85rem; margin-bottom: 1.5rem;">
+          Daftar Akun Baru <i class="fa-solid fa-user-plus"></i>
+        </button>
+
+        <!-- Redirect to login -->
+        <p style="font-size: 0.9rem; text-align: center; color: var(--text-medium); margin-bottom: 0;">
+          Sudah terdaftar sebagai pasien? <a href="login.html" style="color: var(--primary); font-weight: 700;">Masuk Akun</a>
+        </p>
+      </form>
+
+    </div>
+
+    <!-- Back link -->
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <a href="index.html" style="font-size: 0.9rem; color: var(--secondary-light); font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda</a>
+    </div>
+
+  </div>
+
+  <!-- Database scripts -->
+  <script src="database.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if user is already logged in
+      const session = Database.getSession();
+      if (session) {
+        window.location.href = 'patient-dashboard.html';
+      }
+
+      const registerForm = document.getElementById('registerForm');
+      const errorAlert = document.getElementById('errorAlert');
+      const errorText = document.getElementById('errorText');
+
+      registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('regName').value.trim();
+        const nik = document.getElementById('regNik').value.trim();
+        const dob = document.getElementById('regDob').value;
+        const phone = document.getElementById('regPhone').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+
+        // Validation: NIK format check (just digits)
+        if (!/^[0-9]{16}$/.test(nik)) {
+          errorText.textContent = "NIK KTP harus terdiri dari 16 digit angka.";
+          errorAlert.style.display = 'block';
+          return;
+        }
+
+        // Validation: Password match check
+        if (password !== passwordConfirm) {
+          errorText.textContent = "Konfirmasi kata sandi tidak cocok.";
+          errorAlert.style.display = 'block';
+          return;
+        }
+
+        try {
+          Database.registerUser(name, nik, dob, phone, email, password);
+          errorAlert.style.display = 'none';
+          
+          // Auto log in after registration
+          Database.login(email, password);
+          alert("Pendaftaran akun berhasil! Anda otomatis masuk ke dashboard pasien.");
+          window.location.href = 'patient-dashboard.html';
+        } catch (error) {
+          errorText.textContent = error.message;
+          errorAlert.style.display = 'block';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

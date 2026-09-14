@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layanan & Fasilitas - RS Graha Medika</title>
+  <meta name="description" content="Informasi lengkap poliklinik spesialis, unit penunjang 24 jam, rehabilitasi medis, serta kelas kamar rawat inap di RS Graha Medika.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fa-solid fa-phone"></i> IGD 24 Jam: (021) 5555-7777</span>
+        <span><i class="fa-solid fa-envelope"></i> info@grahamedika.com</span>
+      </div>
+      <div class="topbar-socials">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Youtube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER & NAVIGATION -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+        <div class="logo-text">
+          Graha Medika
+          <span>Rumah Sakit</span>
+        </div>
+      </a>
+      
+      <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Beranda</a></li>
+        <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+        <li><a href="layanan.html" class="nav-link active">Layanan</a></li>
+        <li><a href="dokter.html" class="nav-link">Dokter</a></li>
+        <li><a href="kontak.html" class="nav-link">Hubungi Kami</a></li>
+        <li class="nav-btn"><a href="reservasi.html" class="btn btn-primary">Reservasi</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER BANNER -->
+  <section class="hero" style="padding: 4rem 0 3rem 0; text-align: center;">
+    <div class="container" style="z-index: 2; position: relative;">
+      <span class="badge">Layanan Medis</span>
+      <h1 class="hero-title" style="font-size: 2.75rem; margin-bottom: 0.5rem;">Layanan & Fasilitas</h1>
+      <p style="max-width: 600px; margin: 0 auto; color: var(--text-medium);">
+        Menyediakan layanan klinis prima terpadu, penunjang diagnostic, apotek 24 jam, dan fasilitas rawat inap bernuansa hangat dan nyaman.
+      </p>
+    </div>
+    <div class="hero-bg-shapes">
+      <div class="shape shape-2" style="bottom: -100px; left: 0;"></div>
+    </div>
+  </section>
+
+  <!-- MEDICAL SERVICES SECTION -->
+  <section class="section-padding">
+    <div class="container">
+      <div class="text-center">
+        <span class="badge">Klinik & Penunjang</span>
+        <h2 class="section-title">Pelayanan Medis Kami</h2>
+        <p class="section-subtitle">Pusat layanan kesehatan komprehensif yang dirancang untuk kebutuhan medis Anda.</p>
+      </div>
+
+      <div class="services-grid">
+        <!-- Service 1: IGD -->
+        <div class="service-card">
+          <div class="service-img-container">
+            <i class="fa-solid fa-truck-medical service-img-placeholder"></i>
+          </div>
+          <div class="service-content">
+            <h3>Instalasi Gawat Darurat (IGD)</h3>
+            <p>Penanganan gawat darurat darurat 24 jam yang ditunjang dokter ahli emergency, paramedis sigap, peralatan resusitasi lengkap, dan ambulans.</p>
+          </div>
+        </div>
+
+        <!-- Service 2: Poliklinik Spesialis -->
+        <div class="service-card">
+          <div class="service-img-container">
+            <i class="fa-solid fa-stethoscope service-img-placeholder"></i>
+          </div>
+          <div class="service-content">
+            <h3>Poliklinik Spesialis</h3>
+            <p>Konsultasi dokter spesialis rawat jalan terpadu meliputi spesialis anak, kebidanan/kandungan, penyakit dalam, jantung, bedah, dan gigi.</p>
+          </div>
+        </div>
+
+        <!-- Service 3: Laboratorium 24 Jam -->
+        <div class="service-card">
+          <div class="service-img-container">
+            <i class="fa-solid fa-microscope service-img-placeholder"></i>
+          </div>
+          <div class="service-content">
+            <h3>Laboratorium 24 Jam</h3>
+            <p>Pemeriksaan patologi klinik, hematologi, imunologi, urin, feses secara akurat dan cepat untuk mendukung ketepatan diagnosa dokter.</p>
+          </div>
+        </div>
+
+        <!-- Service 4: Radiologi & Imaging -->
+        <div class="service-card">
+          <div class="service-img-container">
+            <i class="fa-solid fa-x-ray service-img-placeholder"></i>
+          </div>
+          <div class="service-content">
+            <h3>Radiologi & Diagnostik</h3>
+            <p>Pemeriksaan pencitraan tubuh menggunakan X-Ray Digital, CT-Scan Multi-slice, USG 4 Dimensi, dan Elektrokardiogram (EKG) jantung.</p>
+          </div>
+        </div>
+
+        <!-- Service 5: Rehabilitasi Medis -->
+        <div class="service-card">
+          <div class="service-img-container">
+            <i class="fa-solid fa-wheelchair service-img-placeholder"></i>
+          </div>
+          <div class="service-content">
+            <h3>Rehabilitasi Medis</h3>
+            <p>Layanan pemulihan fungsi gerak tubuh pasca stroke, patah tulang, atau cedera saraf melalui program terapi fisik (Fisioterapi) intensif.</p>
+          </div>
+        </div>
+
+        <!-- Service 6: Apotek & Farmasi 24 Jam -->
+        <div class="service-card">
+          <div class="service-img-container">
+            <i class="fa-solid fa-capsules service-img-placeholder"></i>
+          </div>
+          <div class="service-content">
+            <h3>Apotek & Farmasi</h3>
+            <p>Penyediaan obat-obatan paten yang terjamin keasliannya dan racikan farmasi klinis yang melayani resep rawat inap dan rawat jalan 24 jam.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCOMMODATION / WARD CLASSES -->
+  <section class="section-padding" style="background-color: var(--bg-secondary); border-top: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="text-center">
+        <span class="badge">Akomodasi Rawat Inap</span>
+        <h2 class="section-title">Kelas Kamar & Fasilitas</h2>
+        <p class="section-subtitle">Pilihan ruang rawat inap yang representatif, bersih, dan menunjang kenyamanan istirahat pemulihan pasien.</p>
+      </div>
+
+      <div class="room-grid">
+        <!-- Room 1: VIP -->
+        <div class="room-card">
+          <div class="room-header vip">
+            <h3 class="room-name">Suite VIP</h3>
+            <span class="room-price">Rp 1.500.000 / Hari</span>
+          </div>
+          <ul class="room-features-list">
+            <li>1 Bed Elektrik Pasien</li>
+            <li>Sofa Bed Penunggu</li>
+            <li>Pendingin Ruangan (AC)</li>
+            <li>Smart TV 43" & Kulkas Mini</li>
+            <li>Kamar Mandi Panas/Dingin</li>
+            <li>Makan 3x sehari (Menu VIP)</li>
+            <li>Welcome Drink & Buah</li>
+            <li>Free Wi-Fi High Speed</li>
+          </ul>
+        </div>
+
+        <!-- Room 2: Kelas 1 -->
+        <div class="room-card">
+          <div class="room-header">
+            <h3 class="room-name">Kelas I</h3>
+            <span class="room-price">Rp 900.000 / Hari</span>
+          </div>
+          <ul class="room-features-list">
+            <li>2 Bed Pasien per kamar</li>
+            <li>Kursi Penunggu</li>
+            <li>Pendingin Ruangan (AC)</li>
+            <li>TV LED 32" per kamar</li>
+            <li>Kamar Mandi Dalam</li>
+            <li>Makan 3x sehari</li>
+            <li>Free Wi-Fi</li>
+            <li>Laci Penyimpanan</li>
+          </ul>
+        </div>
+
+        <!-- Room 3: Kelas 2 -->
+        <div class="room-card">
+          <div class="room-header">
+            <h3 class="room-name">Kelas II</h3>
+            <span class="room-price">Rp 600.000 / Hari</span>
+          </div>
+          <ul class="room-features-list">
+            <li>4 Bed Pasien per kamar</li>
+            <li>Kursi Penunggu</li>
+            <li>Pendingin Ruangan (AC)</li>
+            <li>TV LED bersama</li>
+            <li>Kamar Mandi Dalam</li>
+            <li>Makan 3x sehari</li>
+            <li>Free Wi-Fi</li>
+            <li>Tirai Pembatas Pasien</li>
+          </ul>
+        </div>
+
+        <!-- Room 4: Kelas 3 -->
+        <div class="room-card">
+          <div class="room-header">
+            <h3 class="room-name">Kelas III</h3>
+            <span class="room-price">Rp 350.000 / Hari</span>
+          </div>
+          <ul class="room-features-list">
+            <li>6 Bed Pasien per kamar</li>
+            <li>Kursi Penunggu</li>
+            <li>Pendingin Ruangan (AC)</li>
+            <li>Kamar Mandi Luar/Bersama</li>
+            <li>Makan 3x sehari</li>
+            <li>Tirai Pembatas Pasien</li>
+            <li>BPJS Kesehatan Tercover</li>
+            <li>Kebersihan Steril Terjaga</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-grid">
+      <!-- Col 1 -->
+      <div class="footer-col footer-about">
+        <a href="index.html" class="logo" style="margin-bottom: 1.5rem;">
+          <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto; filter: brightness(0) invert(1);">
+          <div class="logo-text" style="color: white;">
+            Graha Medika
+            <span style="color: rgba(255,255,255,0.6);">Rumah Sakit</span>
+          </div>
+        </a>
+        <p class="footer-desc">
+          RS Graha Medika bertekad menjadi penyedia layanan kesehatan terdepan yang terpercaya dalam aspek keamanan, kenyamanan, dan kualitas medis bagi seluruh lapisan masyarakat.
+        </p>
+      </div>
+      
+      <!-- Col 2 -->
+      <div class="footer-col">
+        <h3>Menu Utama</h3>
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="tentang.html">Tentang Kami</a></li>
+          <li><a href="layanan.html">Layanan Medis</a></li>
+          <li><a href="dokter.html">Jadwal Dokter</a></li>
+          <li><a href="reservasi.html">Reservasi Online</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3 -->
+      <div class="footer-col">
+        <h3>Layanan Unggulan</h3>
+        <ul class="footer-links">
+          <li><a href="layanan.html">Instalasi Gawat Darurat</a></li>
+          <li><a href="layanan.html">Poliklinik Spesialis</a></li>
+          <li><a href="layanan.html">Kamar Rawat Inap</a></li>
+          <li><a href="layanan.html">Laboratorium 24 Jam</a></li>
+          <li><a href="layanan.html">Rehabilitasi Medis</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4 -->
+      <div class="footer-col">
+        <h3>Hubungi Kami</h3>
+        <ul class="footer-contact">
+          <li>
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Jl. Graha Medika No. 88, Kav. 12-14, Jakarta Barat, DKI Jakarta, 11620</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-phone"></i>
+            <span>Call Center: (021) 5555-7777<br>IGD 24 Jam: (021) 5555-7777</span>
+          </li>
+          <li>
+            <i class="fa-solid fa-envelope"></i>
+            <span>info@grahamedika.com<br>marketing@grahamedika.com</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="container footer-bottom">
+      <p>&copy; 2026 Rumah Sakit Graha Medika. Hak Cipta Dilindungi Undang-Undang.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="#">Peta Situs</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL: DETAIL JAM PELAYANAN
+       ========================================================================== -->
+  <div class="modal-overlay" id="serviceHoursModal">
+    <div class="modal-box">
+      <button class="modal-close-btn flex-center" aria-label="Tutup modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3><i class="fa-regular fa-clock"></i> Jam Operasional & Pelayanan</h3>
+      </div>
+      <div class="modal-body">
+        <p>Berikut adalah rincian jam operasional pelayanan kesehatan di RS Graha Medika:</p>
+        
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Unit Pelayanan</th>
+              <th>Hari</th>
+              <th>Jam Operasional</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Instalasi Gawat Darurat (IGD)</strong></td>
+              <td>Senin - Minggu</td>
+              <td>24 Jam Non-stop</td>
+            </tr>
+            <tr>
+              <td><strong>Poliklinik Spesialis (Rawat Jalan)</strong></td>
+              <td>Senin - Sabtu</td>
+              <td>08:00 - 20:00 WIB</td>
+            </tr>
+            <tr>
+              <td><strong>Laboratorium Klinis & Radiologi</strong></td>
+              <td>Senin - Minggu</td>
+              <td>24 Jam Non-stop</td>
+            </tr>
+            <tr>
+              <td><strong>Farmasi/Apotek RS</strong></td>
+              <td>Senin - Minggu</td>
+              <td>24 Jam Non-stop</td>
+            </tr>
+            <tr>
+              <td><strong>Jam Besuk Rawat Inap (Siang)</strong></td>
+              <td>Senin - Minggu</td>
+              <td>11:00 - 13:00 WIB</td>
+            </tr>
+            <tr>
+              <td><strong>Jam Besuk Rawat Inap (Sore)</strong></td>
+              <td>Senin - Minggu</td>
+              <td>17:00 - 19:00 WIB</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: LAYANAN EMERGENCY IGD
+       ========================================================================== -->
+  <div class="modal-overlay" id="emergencyModal">
+    <div class="modal-box" style="border-top: 5px solid var(--danger);">
+      <button class="modal-close-btn flex-center" aria-label="Tutup modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3 style="color: var(--danger);"><i class="fa-solid fa-circle-exclamation"></i> Gawat Darurat & IGD 24 Jam</h3>
+      </div>
+      <div class="modal-body text-center">
+        <i class="fa-solid fa-truck-medical" style="font-size: 4rem; color: var(--danger); margin-bottom: 1.5rem;"></i>
+        <h4 style="font-size: 1.35rem; margin-bottom: 0.5rem; color: var(--secondary);">Butuh Bantuan Medis Segera?</h4>
+        <p style="max-width: 460px; margin: 0 auto 1.5rem auto;">
+          Hubungi Hotline Emergency IGD RS Graha Medika untuk penanganan medis darurat cepat atau penjemputan ambulans intensif.
+        </p>
+        
+        <div style="background-color: var(--danger-light); padding: 1.5rem; border-radius: var(--radius-md); border: 2px dashed var(--danger); display: inline-block; width: 100%; margin-bottom: 1.5rem;">
+          <span style="display: block; font-size: 0.85rem; text-transform: uppercase; color: var(--text-medium); font-weight: 600;">Nomor Telepon IGD Utama</span>
+          <a href="tel:02188889999" style="font-size: 2.25rem; font-weight: 800; color: var(--danger); font-family: var(--font-heading);">
+            (021) 5555-7777
+          </a>
+        </div>
+        
+        <button class="btn btn-dark" style="margin-top: 2rem; width: 100%;" onclick="closeModal('emergencyModal')">Tutup Jendela</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="database.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

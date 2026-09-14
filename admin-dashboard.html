@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - RS Graha Medika</title>
+  <meta name="description" content="Dashboard administrasi RS Graha Medika. Kelola antrean pendaftaran pasien dan daftar dokter spesialis.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Admin specific badges */
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+    .status-pending { background-color: var(--accent-light); color: var(--accent); }
+    .status-approved { background-color: var(--primary-alpha); color: var(--primary); }
+    .status-canceled { background-color: var(--danger-light); color: var(--danger); }
+    .status-completed { background-color: var(--bg-tertiary); color: var(--text-medium); }
+
+    /* Dashboard Layout */
+    .db-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: flex-start;
+      margin-top: 2rem;
+      margin-bottom: 4rem;
+    }
+    .db-sidebar {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .db-content-card {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .db-menu-list {
+      margin-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+    }
+    .db-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      color: var(--text-medium);
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .db-menu-item.active, .db-menu-item:hover {
+      background-color: var(--primary-alpha);
+      color: var(--primary);
+    }
+    
+    .db-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .db-stat-box {
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      padding: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .db-stat-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: var(--text-white);
+      font-size: 1.1rem;
+    }
+
+    /* Panels logic */
+    .dashboard-panel {
+      display: none;
+    }
+    .dashboard-panel.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+
+    /* Table styling */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .admin-table th, .admin-table td {
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.85rem;
+    }
+    .admin-table th {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      color: var(--secondary);
+      background-color: var(--bg-secondary);
+    }
+    .admin-table tr:hover {
+      background-color: hsla(162, 20%, 98%, 0.5);
+    }
+    .bkg-actions-group {
+      display: flex;
+      gap: 0.35rem;
+    }
+    .btn-table-action {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.75rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+    }
+
+    /* Days checkbox grid */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .day-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-medium);
+      cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .db-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 900px) {
+      .db-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fa-solid fa-user-shield"></i> Portal Admin RS Graha Medika</span>
+        <span><i class="fa-solid fa-circle"></i> Mode Sistem: Live</span>
+      </div>
+      <div class="topbar-socials">
+        <span style="font-size: 0.85rem; color: hsla(0,0%,100%,0.85);">Sistem Basis Data Persisten LocalStorage</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER & NAVIGATION -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+        <div class="logo-text">
+          Graha Medika
+          <span>Rumah Sakit</span>
+        </div>
+      </a>
+      
+      <ul class="nav-menu">
+        <li class="nav-btn"><a href="#" id="logoutBtnHeader" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1.25rem;">Log Out</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ADMIN DASHBOARD CONTENT -->
+  <div class="container">
+    <div class="db-container">
+      
+      <!-- Left Sidebar: Admin Controls -->
+      <aside class="db-sidebar">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 1.5rem;">
+          <div class="db-profile-pic flex-center" style="background-color: var(--secondary-light); color: white;">
+            <i class="fa-solid fa-user-gear"></i>
+          </div>
+          <h3 id="adminName" style="font-size: 1.15rem; margin-bottom: 0.25rem;">Administrator</h3>
+          <span style="font-size: 0.8rem; color: var(--text-light);">admin@grahamedika.com</span>
+        </div>
+
+        <ul class="db-menu-list">
+          <li>
+            <div id="menuQueues" class="db-menu-item active">
+              <i class="fa-solid fa-list-ol"></i> Antrean Pasien
+            </div>
+          </li>
+          <li>
+            <div id="menuDoctors" class="db-menu-item">
+              <i class="fa-solid fa-user-doctor"></i> Manajemen Dokter
+            </div>
+          </li>
+          <li>
+            <a href="#" id="logoutBtnSidebar" class="db-menu-item" style="color: var(--danger);">
+              <i class="fa-solid fa-right-from-bracket"></i> Keluar Sistem
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Right Main Content Panels -->
+      <main class="db-content-card">
+        
+        <!-- STATS COUNTER GRID -->
+        <div class="db-stats-grid">
+          <!-- Stat 1: Total Omset (IDR) -->
+          <div class="db-stat-box">
+            <div class="db-stat-icon flex-center" style="background-color: hsl(162, 75%, 33%); color: white;"><i class="fa-solid fa-money-bill-wave"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Total Omset</span>
+              <strong id="statTotalRevenue" style="font-size: 1.1rem; color: var(--secondary); font-weight: 800;">Rp 0</strong>
+            </div>
+          </div>
+          <!-- Stat 2: Pending Queues -->
+          <div class="db-stat-box">
+            <div class="db-stat-icon flex-center" style="background-color: var(--accent);"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Menunggu</span>
+              <strong id="statPendingBookings" style="font-size: 1.35rem; color: var(--secondary);">0</strong>
+            </div>
+          </div>
+          <!-- Stat 3: Approved Queues -->
+          <div class="db-stat-box">
+            <div class="db-stat-icon flex-center" style="background-color: var(--primary);"><i class="fa-solid fa-circle-check"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Disetujui</span>
+              <strong id="statApprovedBookings" style="font-size: 1.35rem; color: var(--secondary);">0</strong>
+            </div>
+          </div>
+          <!-- Stat 4: Total Doctors -->
+          <div class="db-stat-box">
+            <div class="db-stat-icon flex-center" style="background-color: var(--primary-dark);"><i class="fa-solid fa-user-doctor"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.75rem; color: var(--text-light); font-weight: 600;">Tim Dokter</span>
+              <strong id="statTotalDoctors" style="font-size: 1.35rem; color: var(--secondary);">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 1: ANTREAN PASIEN (CRUD BOOKINGS) -->
+        <div id="panelQueues" class="dashboard-panel active">
+          <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--secondary-dark);">Pengelolaan Antrean Pasien</h2>
+          <p style="color: var(--text-medium); font-size: 0.85rem; margin-bottom: 1.5rem;">Terima, jadwalkan, batalkan, atau selesaikan antrean janji temu pasien rawat jalan secara real-time.</p>
+          
+          <div style="overflow-x: auto; width: 100%;">
+            <table class="admin-table" id="queuesTable">
+              <thead>
+                <tr>
+                  <th>Kode / Tgl Daftar</th>
+                  <th>Pasien</th>
+                  <th>Poliklinik & Dokter</th>
+                  <th>Jadwal Berobat</th>
+                  <th>Pembayaran</th>
+                  <th>Status</th>
+                  <th>Aksi Pengelolaan</th>
+                </tr>
+              </thead>
+              <tbody id="queuesTableBody">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+
+            <div id="queuesEmptyState" style="display: none; text-align: center; padding: 4rem 2rem;">
+              <i class="fa-solid fa-list-ol" style="font-size: 3rem; color: var(--text-light); margin-bottom: 1rem;"></i>
+              <p>Belum ada data pendaftaran antrean berobat yang tercatat.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 2: MANAJEMEN DOKTER (CRUD DOCTORS) -->
+        <div id="panelDoctors" class="dashboard-panel">
+          <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: flex-start;">
+            
+            <!-- Left: Doctor Directory List -->
+            <div>
+              <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--secondary-dark);">Daftar Tim Medis</h2>
+              <p style="color: var(--text-medium); font-size: 0.85rem; margin-bottom: 1.5rem;">Tambahkan dokter spesialis baru atau hapus dokter dari daftar direktori RS Graha Medika.</p>
+
+              <table class="admin-table" id="adminDoctorsTable">
+                <thead>
+                  <tr>
+                    <th>Dokter</th>
+                    <th>Poliklinik</th>
+                    <th>Hari Praktek</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="adminDoctorsTableBody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Right: Add Doctor Form -->
+            <div style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem;">
+              <h3 style="font-size: 1.2rem; margin-bottom: 1.25rem; color: var(--secondary);">Tambah Dokter Baru</h3>
+              
+              <form id="addDoctorForm">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                  <label for="newDocName">Nama Dokter (Lengkap + Gelar)</label>
+                  <input type="text" id="newDocName" class="input-style" placeholder="Contoh: dr. Adrian Sp.A" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                  <label for="newDocSpec">Poliklinik</label>
+                  <select id="newDocSpec" class="input-style" required>
+                    <option value="">-- Pilih Poliklinik --</option>
+                    <option value="anak">Spesialis Anak (Pediatri)</option>
+                    <option value="kandungan">Spesialis Kandungan & Kebidanan (OBGYN)</option>
+                    <option value="dalam">Spesialis Penyakit Dalam</option>
+                    <option value="jantung">Spesialis Jantung & Pembuluh Darah</option>
+                    <option value="bedah">Spesialis Bedah Umum</option>
+                    <option value="gigi">Dokter Gigi & Mulut</option>
+                  </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                  <label for="newDocFee">Tarif Konsultasi (Rp)</label>
+                  <input type="number" id="newDocFee" class="input-style" placeholder="Contoh: 150000" min="50000" step="5000" value="150000" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                  <label>Hari Praktek Kerja (Pilih Minimal 1)</label>
+                  <div class="days-grid">
+                    <label class="day-checkbox-label">
+                      <input type="checkbox" name="workday" value="Senin"> Senin
+                    </label>
+                    <label class="day-checkbox-label">
+                      <input type="checkbox" name="workday" value="Selasa"> Selasa
+                    </label>
+                    <label class="day-checkbox-label">
+                      <input type="checkbox" name="workday" value="Rabu"> Rabu
+                    </label>
+                    <label class="day-checkbox-label">
+                      <input type="checkbox" name="workday" value="Kamis"> Kamis
+                    </label>
+                    <label class="day-checkbox-label">
+                      <input type="checkbox" name="workday" value="Jumat"> Jumat
+                    </label>
+                    <label class="day-checkbox-label">
+                      <input type="checkbox" name="workday" value="Sabtu"> Sabtu
+                    </label>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 0.9rem; padding: 0.65rem;">
+                  <i class="fa-solid fa-user-plus"></i> Simpan Tim Medis
+                </button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-bottom" style="border-top: none; padding-top: 0; text-align: center;">
+      <p>&copy; 2026 Rumah Sakit Graha Medika. Hak Cipta Dilindungi Undang-Undang.</p>
+    </div>
+  </footer>
+
+  <!-- Database scripts -->
+  <script src="database.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Admin Guard
+      const session = Database.getSession();
+      if (!session || session.role !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Sidebar Tab Toggling
+      const menuQueues = document.getElementById('menuQueues');
+      const menuDoctors = document.getElementById('menuDoctors');
+      const panelQueues = document.getElementById('panelQueues');
+      const panelDoctors = document.getElementById('panelDoctors');
+
+      menuQueues.addEventListener('click', () => {
+        menuQueues.classList.add('active');
+        menuDoctors.classList.remove('active');
+        panelQueues.classList.add('active');
+        panelDoctors.classList.remove('active');
+      });
+
+      menuDoctors.addEventListener('click', () => {
+        menuDoctors.classList.add('active');
+        menuQueues.classList.remove('active');
+        panelDoctors.classList.add('active');
+        panelQueues.classList.remove('active');
+      });
+
+      // Logout handler
+      const handleLogout = (e) => {
+        e.preventDefault();
+        if (confirm("Apakah Anda yakin ingin keluar dari portal admin?")) {
+          Database.logout();
+          window.location.href = 'index.html';
+        }
+      };
+
+      document.getElementById('logoutBtnHeader').addEventListener('click', handleLogout);
+      document.getElementById('logoutBtnSidebar').addEventListener('click', handleLogout);
+
+      // Load Statistics counters
+      function loadStats() {
+        const bookings = Database.getBookings();
+        const doctors = Database.getDoctors();
+
+        const totalRevenue = bookings
+          .filter(b => (b.status === 'Approved' || b.status === 'Completed') && b.paymentType === 'Mandiri')
+          .reduce((sum, b) => sum + (b.totalFee || 0), 0);
+
+        document.getElementById('statTotalRevenue').textContent = "Rp " + totalRevenue.toLocaleString('id-ID');
+        document.getElementById('statPendingBookings').textContent = bookings.filter(b => b.status === 'Pending').length;
+        document.getElementById('statApprovedBookings').textContent = bookings.filter(b => b.status === 'Approved').length;
+        document.getElementById('statTotalDoctors').textContent = doctors.length;
+      }
+
+      // Panel 1: Load Queues Queue Table (CRUD Queue Bookings)
+      const queuesTable = document.getElementById('queuesTable');
+      const queuesTableBody = document.getElementById('queuesTableBody');
+      const queuesEmptyState = document.getElementById('queuesEmptyState');
+
+      function loadQueues() {
+        const bookings = Database.getBookings();
+        
+        queuesTableBody.innerHTML = '';
+        
+        if (bookings.length === 0) {
+          queuesTable.style.display = 'none';
+          queuesEmptyState.style.display = 'block';
+          return;
+        }
+
+        queuesTable.style.display = 'table';
+        queuesEmptyState.style.display = 'none';
+
+        // Sort by date descending
+        bookings.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        bookings.forEach(b => {
+          const row = document.createElement('tr');
+          
+          let badgeClass = 'status-pending';
+          let statusLabel = 'Menunggu';
+          if (b.status === 'Approved') { badgeClass = 'status-approved'; statusLabel = 'Disetujui'; }
+          else if (b.status === 'Canceled') { badgeClass = 'status-canceled'; statusLabel = 'Batal'; }
+          else if (b.status === 'Completed') { badgeClass = 'status-completed'; statusLabel = 'Selesai'; }
+
+          // Format Date
+          const dateParts = b.date.split('-');
+          const dateFormatted = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+          // Format Created Date
+          const createdDate = new Date(b.createdAt);
+          const createdFormatted = `${createdDate.getDate()}/${createdDate.getMonth()+1} ${createdDate.getHours()}:${createdDate.getMinutes() < 10 ? '0' + createdDate.getMinutes() : createdDate.getMinutes()}`;
+
+          // Action buttons depending on status
+          let actionButtons = '';
+          if (b.status === 'Pending') {
+            actionButtons = `
+              <button class="btn btn-primary btn-table-action" onclick="changeStatus('${b.id}', 'Approved')"><i class="fa-solid fa-check"></i> Setujui</button>
+              <button class="btn btn-emergency btn-table-action" onclick="changeStatus('${b.id}', 'Canceled')"><i class="fa-solid fa-ban"></i> Tolak</button>
+            `;
+          } else if (b.status === 'Approved') {
+            actionButtons = `
+              <button class="btn btn-dark btn-table-action" onclick="changeStatus('${b.id}', 'Completed')" style="background-color: var(--secondary);"><i class="fa-solid fa-circle-check"></i> Selesai</button>
+              <button class="btn btn-emergency btn-table-action" onclick="changeStatus('${b.id}', 'Canceled')"><i class="fa-solid fa-ban"></i> Batalkan</button>
+            `;
+          } else {
+            actionButtons = `<span style="font-size: 0.75rem; color: var(--text-light); font-style: italic;">No Action</span>`;
+          }
+
+          row.innerHTML = `
+            <td>
+              <strong class="ticket-code">${b.bookingCode}</strong><br>
+              <span style="font-size: 0.7rem; color: var(--text-light);">${createdFormatted}</span>
+            </td>
+            <td>
+              <strong>${b.patientName}</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-medium);">NIK: ${b.patientNik}</span><br>
+              <a href="https://wa.me/${b.patientPhone}" target="_blank" style="font-size: 0.75rem; color: #25d366; font-weight: 600;"><i class="fa-brands fa-whatsapp"></i> Chat WhatsApp</a>
+            </td>
+            <td>
+              <strong>${b.doctorName}</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;">${b.polyclinicLabel}</span>
+            </td>
+            <td>
+              <strong>${dateFormatted}</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-medium); font-weight: 500;">${b.time} WIB</span><br>
+              <span style="font-size: 0.8rem; color: var(--primary); font-weight: bold;">Antrean: ${b.queueNum}</span>
+            </td>
+            <td>
+              ${b.paymentType === 'BPJS' ? `<span style="font-weight: 700; color: #0d6efd; font-size: 0.75rem;">BPJS</span><br><span style="font-size: 0.7rem; color: var(--text-light);">${b.bpjsNumber}</span>` : `<span style="font-weight: 750; color: var(--primary); font-size: 0.75rem;">Umum (Lunas)</span><br><span style="font-size: 0.75rem; font-weight: 600; color: var(--text-medium);">Rp ${(b.totalFee || 0).toLocaleString('id-ID')}</span>`}
+            </td>
+            <td><span class="status-badge ${badgeClass}">${statusLabel}</span></td>
+            <td><div class="bkg-actions-group">${actionButtons}</div></td>
+          `;
+          queuesTableBody.appendChild(row);
+        });
+      }
+
+      window.changeStatus = function(bookingId, newStatus) {
+        let msg = "Ubah status antrean?";
+        if (newStatus === 'Approved') msg = "Apakah Anda ingin menyetujui jadwal konsultasi pasien ini?";
+        if (newStatus === 'Canceled') msg = "Apakah Anda ingin menolak/membatalkan konsultasi pasien ini?";
+        if (newStatus === 'Completed') msg = "Tandai konsultasi medis ini telah selesai dilaksanakan?";
+
+        if (confirm(msg)) {
+          try {
+            Database.updateBookingStatus(bookingId, newStatus);
+            loadQueues();
+            loadStats();
+          } catch(err) {
+            alert(err.message);
+          }
+        }
+      };
+
+
+      // Panel 2: Load Doctors list (CRUD Doctors)
+      const adminDoctorsTable = document.getElementById('adminDoctorsTable');
+      const adminDoctorsTableBody = document.getElementById('adminDoctorsTableBody');
+
+      function loadDoctors() {
+        const doctors = Database.getDoctors();
+        adminDoctorsTableBody.innerHTML = '';
+
+        doctors.forEach(doc => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <div style="width: 28px; height: 28px; border-radius: 50%; background-color: var(--primary-alpha); color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 0.8rem;"><i class="fa-solid ${doc.avatarIcon}"></i></div>
+                <strong>${doc.name}</strong>
+              </div>
+            </td>
+            <td><span style="font-size: 0.8rem; font-weight: 600; color: var(--secondary); text-transform: uppercase;">${doc.spec}</span></td>
+            <td><span style="font-size: 0.8rem; color: var(--text-medium);">${doc.briefDays}</span></td>
+            <td>
+              <button class="btn btn-emergency btn-table-action" onclick="deleteDoc('${doc.id}', '${doc.name}')" style="padding: 0.25rem 0.5rem;"><i class="fa-solid fa-trash-can"></i> Hapus</button>
+            </td>
+          `;
+          adminDoctorsTableBody.appendChild(row);
+        });
+      }
+
+      window.deleteDoc = function(docId, docName) {
+        if (confirm(`Apakah Anda yakin ingin menghapus ${docName} dari daftar tim medis RS Graha Medika?`)) {
+          Database.deleteDoctor(docId);
+          loadDoctors();
+          loadStats();
+        }
+      };
+
+      // Add doctor form handler
+      const addDoctorForm = document.getElementById('addDoctorForm');
+      addDoctorForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const docName = document.getElementById('newDocName').value.trim();
+        const docSpec = document.getElementById('newDocSpec').value;
+        const docFee = document.getElementById('newDocFee').value;
+        
+        // Grab checked days
+        const checkedBoxes = document.querySelectorAll('input[name="workday"]:checked');
+        const scheduleDays = Array.from(checkedBoxes).map(cb => cb.value);
+
+        if (scheduleDays.length === 0) {
+          alert("Silakan pilih minimal 1 hari praktek kerja dokter.");
+          return;
+        }
+
+        try {
+          Database.addDoctor(docName, docSpec, scheduleDays, docFee);
+          addDoctorForm.reset();
+          alert("Dokter baru berhasil ditambahkan!");
+          loadDoctors();
+          loadStats();
+        } catch(err) {
+          alert(err.message);
+        }
+      });
+
+      // Initial page load runs
+      loadStats();
+      loadQueues();
+      loadDoctors();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Pasien - RS Graha Medika</title>
+  <meta name="description" content="Dashboard portal pasien RS Graha Medika. Kelola reservasi konsultasi dokter Anda secara mandiri di sini.">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* Status Badge styling */
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+    .status-pending { background-color: var(--accent-light); color: var(--accent); }
+    .status-approved { background-color: var(--primary-alpha); color: var(--primary); }
+    .status-canceled { background-color: var(--danger-light); color: var(--danger); }
+    .status-completed { background-color: var(--bg-tertiary); color: var(--text-medium); }
+
+    /* Dashboard Layout */
+    .db-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      align-items: flex-start;
+      margin-top: 2rem;
+      margin-bottom: 4rem;
+    }
+    .db-sidebar {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .db-content-card {
+      background-color: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .db-profile-pic {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: var(--primary-alpha);
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .db-menu-list {
+      margin-top: 2rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1.5rem;
+    }
+    .db-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      color: var(--text-medium);
+      margin-bottom: 0.5rem;
+      transition: var(--transition);
+    }
+    .db-menu-item.active, .db-menu-item:hover {
+      background-color: var(--primary-alpha);
+      color: var(--primary);
+    }
+    
+    .db-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .db-stat-box {
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .db-stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      color: var(--text-white);
+      font-size: 1.25rem;
+    }
+
+    /* Booking items table styling */
+    .bkg-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+    .bkg-table th, .bkg-table td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+    .bkg-table th {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      color: var(--secondary);
+      background-color: var(--bg-secondary);
+    }
+    .bkg-table tr:hover {
+      background-color: hsla(162, 20%, 98%, 0.5);
+    }
+    .bkg-actions-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .btn-table-action {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .db-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fa-solid fa-phone"></i> IGD 24 Jam: (021) 5555-7777</span>
+        <span><i class="fa-solid fa-envelope"></i> info@grahamedika.com</span>
+      </div>
+      <div class="topbar-socials">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Youtube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER & NAVIGATION -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+        <div class="logo-text">
+          Graha Medika
+          <span>Rumah Sakit</span>
+        </div>
+      </a>
+      
+      <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html" class="nav-link">Beranda</a></li>
+        <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+        <li><a href="layanan.html" class="nav-link">Layanan</a></li>
+        <li><a href="dokter.html" class="nav-link">Dokter</a></li>
+        <li><a href="kontak.html" class="nav-link">Hubungi Kami</a></li>
+        <li class="nav-btn"><a href="#" id="logoutBtnHeader" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1.25rem;">Keluar</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- DASHBOARD WRAPPER -->
+  <div class="container">
+    <div class="db-container">
+      
+      <!-- Left Sidebar: Profile Details -->
+      <aside class="db-sidebar">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+          <div class="db-profile-pic flex-center">
+            <i class="fa-solid fa-user-injured"></i>
+          </div>
+          <h3 id="sidebarPatientName" style="font-size: 1.15rem; margin-bottom: 0.25rem;">Nama Pasien</h3>
+          <span id="sidebarPatientEmail" style="font-size: 0.8rem; color: var(--text-light);">email@domain.com</span>
+        </div>
+
+        <div style="margin-top: 1.5rem; font-size: 0.85rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem;">
+          <div style="margin-bottom: 0.75rem;">
+            <span style="display:block; color: var(--text-light); font-weight: 500;">Nomor NIK KTP:</span>
+            <strong id="sidebarPatientNik" style="color: var(--secondary);">3172xxxxxxxxxxxx</strong>
+          </div>
+          <div style="margin-bottom: 0.75rem;">
+            <span style="display:block; color: var(--text-light); font-weight: 500;">No. WhatsApp:</span>
+            <strong id="sidebarPatientPhone" style="color: var(--secondary);">0812xxxxxxxx</strong>
+          </div>
+          <div>
+            <span style="display:block; color: var(--text-light); font-weight: 500;">Tanggal Lahir:</span>
+            <strong id="sidebarPatientDob" style="color: var(--secondary);">-</strong>
+          </div>
+        </div>
+
+        <ul class="db-menu-list">
+          <li>
+            <a href="patient-dashboard.html" class="db-menu-item active">
+              <i class="fa-solid fa-house-medical"></i> Dashboard
+            </a>
+          </li>
+          <li>
+            <a href="reservasi.html" class="db-menu-item">
+              <i class="fa-solid fa-calendar-check"></i> Buat Reservasi
+            </a>
+          </li>
+          <li>
+            <a href="#" id="logoutBtnSidebar" class="db-menu-item" style="color: var(--danger);">
+              <i class="fa-solid fa-right-from-bracket"></i> Keluar Akun
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Right Main Content: Bookings CRUD -->
+      <main class="db-content-card">
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--secondary-dark);">Portal Layanan Pasien</h2>
+        <p style="color: var(--text-medium); font-size: 0.95rem; margin-bottom: 2rem;">Selamat datang kembali! Di sini Anda dapat melacak status antrean berobat Anda secara real-time.</p>
+
+        <!-- Stats grid -->
+        <div class="db-stats-grid">
+          <div class="db-stat-box">
+            <div class="db-stat-icon flex-center" style="background-color: var(--primary);"><i class="fa-solid fa-ticket"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 600;">Total Reservasi Anda</span>
+              <strong id="statTotalBookings" style="font-size: 1.75rem; color: var(--secondary); line-height: 1;">0</strong>
+            </div>
+          </div>
+          <div class="db-stat-box">
+            <div class="db-stat-icon flex-center" style="background-color: var(--accent);"><i class="fa-solid fa-clock-rotate-left"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 600;">Antrean Aktif (Pending/Approved)</span>
+              <strong id="statActiveBookings" style="font-size: 1.75rem; color: var(--secondary); line-height: 1;">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--secondary); border-left: 4px solid var(--primary); padding-left: 0.5rem;">Daftar Reservasi Pemeriksaan Dokter</h3>
+        
+        <!-- Bookings Container -->
+        <div style="overflow-x: auto; width: 100%;">
+          <table class="bkg-table" id="bookingsTable">
+            <thead>
+              <tr>
+                <th>Kode Booking</th>
+                <th>Poliklinik & Dokter</th>
+                <th>Tanggal & Jam</th>
+                <th>Antrean</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+
+          <!-- Empty state -->
+          <div id="bookingsEmptyState" style="display: none; text-align: center; padding: 4rem 2rem;">
+            <i class="fa-solid fa-calendar-xmark" style="font-size: 4rem; color: var(--text-light); margin-bottom: 1.5rem;"></i>
+            <h4 style="font-size: 1.25rem; color: var(--secondary); margin-bottom: 0.5rem;">Belum Ada Reservasi Aktif</h4>
+            <p style="max-width: 400px; margin: 0 auto 1.5rem auto; font-size: 0.9rem;">Anda belum pernah melakukan registrasi antrean dokter secara online.</p>
+            <a href="reservasi.html" class="btn btn-primary">Daftar Konsultasi Sekarang</a>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-bottom" style="border-top: none; padding-top: 0; text-align: center;">
+      <p>&copy; 2026 Rumah Sakit Graha Medika. Hak Cipta Dilindungi Undang-Undang.</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       MODAL: RESCHEDULE BOOKING (UPDATE)
+       ========================================================================== -->
+  <div class="modal-overlay" id="rescheduleModal">
+    <div class="modal-box">
+      <button class="modal-close-btn flex-center" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3><i class="fa-regular fa-calendar-days"></i> Reschedule Janji Temu</h3>
+      </div>
+      <div class="modal-body">
+        <form id="rescheduleForm">
+          <input type="hidden" id="rescheduleBId">
+          
+          <div style="background-color: var(--primary-alpha); padding: 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+            <span>Dokter yang Dipilih:</span>
+            <strong id="rescheduleDocName" style="display: block; font-size: 1rem; color: var(--secondary);">dr. Adrian Sp.A</strong>
+            <span id="rescheduleDocBrief" style="display: block; font-size: 0.75rem; color: var(--text-medium);">Jadwal Praktek: Senin, Rabu, Jumat</span>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="rescheduleDate">Pilih Tanggal Baru</label>
+            <input type="date" id="rescheduleDate" class="input-style" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 2rem;">
+            <label for="rescheduleTime">Pilih Jam Baru</label>
+            <select id="rescheduleTime" class="input-style" required disabled>
+              <option value="">-- Pilih Jam Praktek --</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('rescheduleModal')">Batal</button>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: E-TICKET RECEIPT (POPUP AFTER SUCCESSFUL RESERVATION)
+       ========================================================================== -->
+  <div class="modal-overlay" id="bookingTicketModal">
+    <div class="modal-box" style="max-width: 650px;">
+      <button class="modal-close-btn flex-center" aria-label="Tutup tiket"><i class="fa-solid fa-xmark"></i></button>
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-ticket"></i> Bukti Reservasi Online</h3>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        
+        <!-- Ticket Card Frame -->
+        <div class="ticket-container">
+          <div class="ticket-header">
+            <div class="ticket-header-logo">
+              <img src="images/logo.png" alt="Logo" style="height: 24px; width: auto;"> RS Graha Medika
+            </div>
+            <span id="ticketStatusBadge" class="ticket-status">CONFIRMED</span>
+          </div>
+
+          <div class="ticket-body">
+            <div class="ticket-info-grid">
+              <div class="ticket-info-item">
+                <span>Kode Booking</span>
+                <strong id="ticketCode" class="ticket-code">RSGM-2026-9912</strong>
+              </div>
+              <div class="ticket-info-item">
+                <span>Jaminan Pasien</span>
+                <strong id="ticketPayment">Umum / Mandiri</strong>
+              </div>
+              
+              <div class="ticket-info-item" style="grid-column: 1 / -1; border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+                <span>Nama Pasien</span>
+                <strong id="ticketPatientName" style="font-size: 1.1rem;">Budi Santoso</strong>
+              </div>
+              
+              <div class="ticket-info-item" style="grid-column: 1 / -1;">
+                <span>Nomor NIK</span>
+                <strong id="ticketNik">3172010203040005</strong>
+              </div>
+
+              <div class="ticket-info-item" style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+                <span>Poliklinik</span>
+                <strong id="ticketPolyclinic">Spesialis Penyakit Dalam</strong>
+              </div>
+              <div class="ticket-info-item" style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+                <span>Dokter Spesialis</span>
+                <strong id="ticketDoctor">dr. Budi Sp.PD</strong>
+              </div>
+
+              <div class="ticket-info-item" style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+                <span>Tanggal Kunjungan</span>
+                <strong id="ticketDate">01 Agustus 2026</strong>
+              </div>
+              <div class="ticket-info-item" style="border-top: 1px solid var(--border-color); padding-top: 0.5rem;">
+                <span>Waktu Konsultasi</span>
+                <strong id="ticketTime">09:00 - 09:30 WIB</strong>
+              </div>
+            </div>
+
+            <div class="ticket-qr-container">
+              <span style="font-size: 0.7rem; color: var(--text-light); text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;">No. Antrean APM</span>
+              <div id="ticketQueueNum" style="font-family: var(--font-heading); font-size: 2.25rem; font-weight: 800; color: var(--primary); line-height: 1; margin-bottom: 0.75rem;">Q-15</div>
+              
+              <div class="qr-code-mockup">
+                <i class="fa-solid fa-qrcode"></i>
+              </div>
+              <span style="font-size: 0.65rem; color: var(--text-light);">Scan di Mesin APM</span>
+            </div>
+          </div>
+
+          <div class="ticket-footer">
+            <span>* Bawa KTP & kartu BPJS (jika menggunakan jaminan BPJS).</span>
+            <span id="ticketPrintDate">Tgl Cetak: 31 Juli 2026</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1.5rem; justify-content: center;">
+          <button class="btn btn-secondary" onclick="printTicket()"><i class="fa-solid fa-print"></i> Cetak E-Tiket</button>
+          <button class="btn btn-primary" onclick="closeModal('bookingTicketModal')">Tutup Jendela</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Database scripts -->
+  <script src="database.js"></script>
+  <script src="app.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Auth Guard
+      const session = Database.getSession();
+      if (!session || session.role !== 'patient') {
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Populate profile data
+      document.getElementById('sidebarPatientName').textContent = session.name;
+      document.getElementById('sidebarPatientEmail').textContent = session.email;
+      document.getElementById('sidebarPatientNik').textContent = session.nik;
+      document.getElementById('sidebarPatientPhone').textContent = session.phone;
+      
+      const dobParts = session.dob.split('-');
+      const monthsIndo = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+      const dobFormatted = dobParts.length === 3 ? `${dobParts[2]} ${monthsIndo[parseInt(dobParts[1]) - 1]} ${dobParts[0]}` : session.dob;
+      document.getElementById('sidebarPatientDob').textContent = dobFormatted;
+
+      const bookingsTable = document.getElementById('bookingsTable');
+      const bookingsTableBody = document.getElementById('bookingsTableBody');
+      const bookingsEmptyState = document.getElementById('bookingsEmptyState');
+
+      const statTotalBookings = document.getElementById('statTotalBookings');
+      const statActiveBookings = document.getElementById('statActiveBookings');
+
+      // Logout handler
+      const handleLogout = (e) => {
+        e.preventDefault();
+        if (confirm("Apakah Anda yakin ingin keluar dari akun?")) {
+          Database.logout();
+          window.location.href = 'index.html';
+        }
+      };
+
+      document.getElementById('logoutBtnHeader').addEventListener('click', handleLogout);
+      document.getElementById('logoutBtnSidebar').addEventListener('click', handleLogout);
+
+      // Load bookings list
+      function loadBookings() {
+        const bookings = Database.getUserBookings(session.id);
+        
+        statTotalBookings.textContent = bookings.length;
+        
+        const activeBookings = bookings.filter(b => b.status === 'Pending' || b.status === 'Approved');
+        statActiveBookings.textContent = activeBookings.length;
+
+        bookingsTableBody.innerHTML = '';
+        
+        if (bookings.length === 0) {
+          bookingsTable.style.display = 'none';
+          bookingsEmptyState.style.display = 'block';
+          return;
+        }
+
+        bookingsTable.style.display = 'table';
+        bookingsEmptyState.style.display = 'none';
+
+        // Sort by date descending
+        bookings.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        bookings.forEach(b => {
+          const row = document.createElement('tr');
+          
+          let badgeClass = 'status-pending';
+          let statusLabel = 'Menunggu';
+          if (b.status === 'Approved') { badgeClass = 'status-approved'; statusLabel = 'Disetujui'; }
+          else if (b.status === 'Canceled') { badgeClass = 'status-canceled'; statusLabel = 'Batal'; }
+          else if (b.status === 'Completed') { badgeClass = 'status-completed'; statusLabel = 'Selesai'; }
+
+          // Format Date nicely
+          const dateParts = b.date.split('-');
+          const dateFormatted = `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
+
+          // Action buttons depending on status
+          let actionButtons = '';
+          if (b.status === 'Pending' || b.status === 'Approved') {
+            actionButtons = `
+              <button class="btn btn-secondary btn-table-action" onclick="openRescheduleModal('${b.id}', '${b.doctorId}')"><i class="fa-regular fa-calendar-check"></i> Reschedule</button>
+              <button class="btn btn-emergency btn-table-action" onclick="cancelBooking('${b.id}')"><i class="fa-solid fa-trash-can"></i> Batal</button>
+            `;
+          }
+          
+          // E-Ticket button
+          actionButtons += `
+            <button class="btn btn-dark btn-table-action" onclick="viewTicket('${b.id}')"><i class="fa-solid fa-ticket"></i> Tiket</button>
+          `;
+
+          const paymentText = b.paymentType === 'BPJS' ? 'BPJS' : `Umum (Rp ${(b.totalFee || 0).toLocaleString('id-ID')})`;
+          row.innerHTML = `
+            <td>
+              <strong class="ticket-code">${b.bookingCode}</strong><br>
+              <span style="font-size: 0.75rem; font-weight: 600; color: var(--primary);">${paymentText}</span>
+            </td>
+            <td>
+              <strong>${b.doctorName}</strong><br>
+              <span style="font-size: 0.75rem; color: var(--text-light); text-transform: uppercase;">${b.polyclinicLabel}</span>
+            </td>
+            <td>
+              ${dateFormatted}<br>
+              <span style="font-size: 0.8rem; color: var(--text-medium); font-weight: 500;">${b.time} WIB</span>
+            </td>
+            <td><strong style="color: var(--primary); font-size: 1rem;">${b.queueNum}</strong></td>
+            <td><span class="status-badge ${badgeClass}">${statusLabel}</span></td>
+            <td><div class="bkg-actions-group">${actionButtons}</div></td>
+          `;
+          bookingsTableBody.appendChild(row);
+        });
+      }
+
+      // Initial load
+      loadBookings();
+
+      // View Ticket Action
+      window.viewTicket = function(bookingId) {
+        const bookings = Database.getBookings();
+        const b = bookings.find(item => item.id === bookingId);
+        
+        if (b) {
+          document.getElementById('ticketCode').textContent = b.bookingCode;
+          document.getElementById('ticketPatientName').textContent = b.patientName;
+          document.getElementById('ticketNik').textContent = b.patientNik;
+          document.getElementById('ticketPolyclinic').textContent = b.polyclinicLabel;
+          document.getElementById('ticketDoctor').textContent = b.doctorName;
+          
+          const dateParts = b.date.split('-');
+          const dateFormatted = `${dateParts[2]} ${monthsIndo[parseInt(dateParts[1]) - 1]} ${dateParts[0]}`;
+          
+          document.getElementById('ticketDate').textContent = dateFormatted;
+          document.getElementById('ticketTime').textContent = b.time + ' WIB';
+          document.getElementById('ticketQueueNum').textContent = b.queueNum;
+          
+          // Display fee status on ticket
+          if (b.paymentType === 'BPJS') {
+            document.getElementById('ticketPayment').textContent = `BPJS (${b.bpjsNumber})`;
+            document.getElementById('ticketStatusBadge').textContent = 'COVERED BY BPJS';
+            document.getElementById('ticketStatusBadge').style.backgroundColor = 'var(--primary)';
+          } else {
+            const feeVal = b.totalFee || 165000;
+            document.getElementById('ticketPayment').textContent = `Umum (Lunas - Rp ${feeVal.toLocaleString('id-ID')})`;
+            document.getElementById('ticketStatusBadge').textContent = 'LUNAS (PAID)';
+            document.getElementById('ticketStatusBadge').style.backgroundColor = 'var(--primary)';
+          }
+
+          const printDate = new Date(b.createdAt);
+          document.getElementById('ticketPrintDate').textContent = `Tgl Cetak: ${printDate.getDate()}/${printDate.getMonth()+1}/${printDate.getFullYear()}`;
+          
+          openModal('bookingTicketModal');
+        }
+      };
+
+      // Cancel Booking Action
+      window.cancelBooking = function(bookingId) {
+        if (confirm("Apakah Anda yakin ingin membatalkan reservasi berobat ini?")) {
+          try {
+            Database.cancelBooking(bookingId);
+            alert("Reservasi berhasil dibatalkan.");
+            loadBookings();
+          } catch(err) {
+            alert(err.message);
+          }
+        }
+      };
+
+      // Reschedule Modal Logic
+      const rescheduleModal = document.getElementById('rescheduleModal');
+      const rescheduleBId = document.getElementById('rescheduleBId');
+      const rescheduleDate = document.getElementById('rescheduleDate');
+      const rescheduleTime = document.getElementById('rescheduleTime');
+      const rescheduleForm = document.getElementById('rescheduleForm');
+      
+      window.openRescheduleModal = function(bookingId, doctorId) {
+        const bookings = Database.getBookings();
+        const b = bookings.find(item => item.id === bookingId);
+        
+        if (b) {
+          rescheduleBId.value = bookingId;
+          document.getElementById('rescheduleDocName').textContent = b.doctorName;
+          
+          const doctors = Database.getDoctors();
+          const doc = doctors.find(d => d.id === doctorId);
+          document.getElementById('rescheduleDocBrief').textContent = `Hari Praktek: ${doc.briefDays}`;
+          
+          // Setup date range picker: tomorrow to 1 month
+          const tomorrow = new Date();
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          const yyyy = tomorrow.getFullYear();
+          let mm = tomorrow.getMonth() + 1;
+          let dd = tomorrow.getDate();
+          if (dd < 10) dd = '0' + dd;
+          if (mm < 10) mm = '0' + mm;
+          rescheduleDate.min = `${yyyy}-${mm}-${dd}`;
+          
+          const maxDate = new Date();
+          maxDate.setMonth(maxDate.getMonth() + 1);
+          const maxY = maxDate.getFullYear();
+          let maxM = maxDate.getMonth() + 1;
+          let maxD = maxDate.getDate();
+          if (maxD < 10) maxD = '0' + maxD;
+          if (maxM < 10) maxM = '0' + maxM;
+          rescheduleDate.max = `${maxY}-${maxM}-${maxD}`;
+          
+          rescheduleDate.value = '';
+          rescheduleTime.innerHTML = '<option value="">-- Pilih Jam Praktek --</option>';
+          rescheduleTime.disabled = true;
+
+          // Event for date selection
+          rescheduleDate.onchange = () => {
+            const dateVal = rescheduleDate.value;
+            if (dateVal) {
+              const selectedDate = new Date(dateVal);
+              const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+              const selectedDayName = dayNames[selectedDate.getDay()];
+              
+              const daySchedule = doc.schedule.find(s => s.day === selectedDayName);
+              
+              rescheduleTime.innerHTML = '<option value="">-- Pilih Jam Praktek --</option>';
+              rescheduleTime.disabled = true;
+
+              if (daySchedule) {
+                rescheduleTime.disabled = false;
+                const hoursRange = daySchedule.hours;
+                const parts = hoursRange.split(' - ');
+                const startH = parseInt(parts[0].split(':')[0]);
+                const endH = parseInt(parts[1].split(':')[0]);
+                
+                for (let h = startH; h < endH; h++) {
+                  const hStr = h < 10 ? '0' + h : h;
+                  
+                  const opt1 = document.createElement('option');
+                  opt1.value = `${hStr}:00 - ${hStr}:30`;
+                  opt1.textContent = `${hStr}:00 - ${hStr}:30 WIB`;
+                  
+                  const opt2 = document.createElement('option');
+                  opt2.value = `${hStr}:30 - ${hStr + 1}:00`;
+                  opt2.textContent = `${hStr}:30 - ${hStr + 1}:00 WIB`;
+                  
+                  rescheduleTime.appendChild(opt1);
+                  rescheduleTime.appendChild(opt2);
+                }
+              } else {
+                alert(`Maaf, ${doc.name} tidak memiliki jadwal praktek pada hari ${selectedDayName}. Jadwal praktek: ${doc.briefDays}.`);
+                rescheduleDate.value = '';
+              }
+            }
+          };
+
+          openModal('rescheduleModal');
+        }
+      };
+
+      // Reschedule Form Submit handler
+      rescheduleForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const bId = rescheduleBId.value;
+        const newD = rescheduleDate.value;
+        const newT = rescheduleTime.value;
+
+        try {
+          Database.rescheduleBooking(bId, newD, newT);
+          closeModal('rescheduleModal');
+          alert("Jadwal janji temu berhasil diubah. Status di-reset menjadi pending untuk persetujuan admin.");
+          loadBookings();
+        } catch(err) {
+          alert(err.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

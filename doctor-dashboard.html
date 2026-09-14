@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Dokter - RS Graha Medika</title>
+  <meta name="description" content="Portal dashboard dokter spesialis RS Graha Medika. Kelola antrean konsultasi pasien.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="container">
+      <div class="topbar-info">
+        <span><i class="fa-solid fa-phone"></i> IGD 24 Jam: (021) 5555-7777</span>
+        <span><i class="fa-solid fa-envelope"></i> info@grahamedika.com</span>
+      </div>
+      <div class="topbar-socials">
+        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#" aria-label="Youtube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+        <div class="logo-text">
+          Graha Medika
+          <span>Rumah Sakit</span>
+        </div>
+      </a>
+      <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
+      <ul class="nav-menu" id="navMenu"></ul>
+    </div>
+  </header>
+
+  <!-- DASHBOARD CONTENT -->
+  <div class="container" style="margin-top: 3rem; margin-bottom: 4rem;">
+    <div class="reservation-layout" style="display: grid; grid-template-columns: 0.3fr 0.7fr; gap: 2.5rem; align-items: start;">
+      
+      <!-- Left Sidebar: Doctor Profile Details -->
+      <aside class="reservation-info-sidebar" style="background-color: var(--bg-primary); border: 1px solid var(--border-color); padding: 2rem;">
+        <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 1.5rem;">
+          <div style="width: 70px; height: 70px; border-radius: 50%; background-color: var(--primary-alpha); color: var(--primary); font-size: 2rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem;">
+            <i id="docAvatar" class="fa-solid fa-user-doctor"></i>
+          </div>
+          <h3 id="docNameSidebar" style="font-size: 1.15rem; margin-bottom: 0.25rem; color: var(--secondary-dark);">dr. -</h3>
+          <span id="docSpecBadge" style="font-size: 0.85rem; background-color: var(--primary-alpha); color: var(--primary); padding: 0.2rem 0.60rem; border-radius: 50px; font-weight: 600; display: inline-block; margin-bottom: 0.5rem;">
+            Spesialis
+          </span>
+          <span id="docEmailSidebar" style="font-size: 0.8rem; color: var(--text-light); display: block;">email@grahamedika.com</span>
+        </div>
+
+        <div style="margin-top: 1.5rem; font-size: 0.85rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem;">
+          <div style="margin-bottom: 0.75rem;">
+            <span style="display:block; color: var(--text-light); font-weight: 500;">Tarif Konsultasi:</span>
+            <strong id="docFeeSidebar" style="color: var(--secondary);">Rp -</strong>
+          </div>
+          <div style="margin-bottom: 0.75rem;">
+            <span style="display:block; color: var(--text-light); font-weight: 500;">No. WhatsApp:</span>
+            <strong id="docPhoneSidebar" style="color: var(--secondary);">-</strong>
+          </div>
+          <div>
+            <span style="display:block; color: var(--text-light); font-weight: 500;">Hari Praktek:</span>
+            <strong id="docDaysSidebar" style="color: var(--primary);">-</strong>
+          </div>
+        </div>
+
+        <ul class="db-menu-list" style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; list-style: none; padding-left: 0;">
+          <li style="margin-bottom: 0.5rem;">
+            <a href="doctor-dashboard.html" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-weight: 600; background-color: var(--primary-alpha); color: var(--primary);">
+              <i class="fa-solid fa-clipboard-list"></i> Antrean Pasien
+            </a>
+          </li>
+          <li>
+            <a href="#" id="docLogoutBtn" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-weight: 600; color: var(--danger); transition: var(--transition);">
+              <i class="fa-solid fa-right-from-bracket"></i> Keluar Akun
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Right Main Content -->
+      <main class="reservation-card" style="padding: 2.5rem;">
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; color: var(--secondary-dark);">Portal Dashboard Dokter</h2>
+        <p style="color: var(--text-medium); font-size: 0.95rem; margin-bottom: 2rem;">Berikut adalah daftar pasien yang terdaftar di poliklinik Anda.</p>
+
+        <!-- Stats grid -->
+        <div class="db-stats-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); border-radius: var(--radius-sm); padding: 1.5rem; display: flex; align-items: center; gap: 1.25rem;">
+            <div class="flex-center" style="width: 50px; height: 50px; border-radius: 50%; background-color: var(--primary); color: var(--text-white); font-size: 1.25rem; display: flex; justify-content: center; align-items: center;"><i class="fa-solid fa-users"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 600;">Total Seluruh Pasien</span>
+              <strong id="statTotalPatients" style="font-size: 1.75rem; color: var(--secondary); line-height: 1;">0</strong>
+            </div>
+          </div>
+          <div style="border: 1px solid var(--border-color); background-color: var(--bg-secondary); border-radius: var(--radius-sm); padding: 1.5rem; display: flex; align-items: center; gap: 1.25rem;">
+            <div class="flex-center" style="width: 50px; height: 50px; border-radius: 50%; background-color: var(--accent); color: var(--text-white); font-size: 1.25rem; display: flex; justify-content: center; align-items: center;"><i class="fa-solid fa-spinner"></i></div>
+            <div>
+              <span style="display: block; font-size: 0.8rem; color: var(--text-light); font-weight: 600;">Menunggu Diperiksa</span>
+              <strong id="statWaitingPatients" style="font-size: 1.75rem; color: var(--secondary); line-height: 1;">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--secondary); border-left: 4px solid var(--primary); padding-left: 0.5rem;">Daftar Antrean Pemeriksaan Pasien</h3>
+        
+        <div style="overflow-x: auto; width: 100%;">
+          <table class="bkg-table">
+            <thead>
+              <tr>
+                <th>Kode Booking</th>
+                <th>Pasien</th>
+                <th>Tanggal & Jam</th>
+                <th>Antrean</th>
+                <th>Jaminan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="doctorBookingsTable"></tbody>
+          </table>
+
+          <div id="emptyStateDoc" style="display: none; text-align: center; padding: 4rem 2rem;">
+            <i class="fa-solid fa-user-clock" style="font-size: 4rem; color: var(--text-light); margin-bottom: 1.5rem;"></i>
+            <h4 style="font-size: 1.25rem; color: var(--secondary); margin-bottom: 0.5rem;">Belum Ada Antrean Pasien</h4>
+            <p style="max-width: 400px; margin: 0 auto; font-size: 0.9rem;">Saat ini belum ada pasien yang memesan antrean di jadwal praktek Anda.</p>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-bottom" style="text-align: center;">
+      <p>&copy; 2026 Rumah Sakit Graha Medika. Hak Cipta Dilindungi Undang-Undang.</p>
+    </div>
+  </footer>
+
+  <script src="database.js"></script>
+  <script src="app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const session = Database.getSession();
+      if (!session || session.role !== "doctor") {
+        window.location.href = "login.html";
+        return;
+      }
+
+      document.getElementById("docNameSidebar").textContent = session.name;
+      document.getElementById("docEmailSidebar").textContent = session.email;
+      document.getElementById("docSpecBadge").textContent = session.specLabel || "Spesialis Medis";
+      if (session.avatarIcon) {
+        document.getElementById("docAvatar").className = "fa-solid " + session.avatarIcon;
+      }
+      document.getElementById("docFeeSidebar").textContent = "Rp " + (session.fee || 150000).toLocaleString("id-ID");
+      document.getElementById("docPhoneSidebar").textContent = session.phone || "081234567890";
+      document.getElementById("docDaysSidebar").textContent = session.briefDays || "Senin s/d Jumat";
+
+      document.getElementById("docLogoutBtn").addEventListener("click", (e) => {
+        e.preventDefault();
+        Database.logout();
+        window.location.href = "index.html";
+      });
+
+      function renderQueues() {
+        const allBookings = Database.getBookings();
+        const docBookings = allBookings.filter(b => b.doctorId === session.id || b.doctorName === session.name);
+
+        document.getElementById("statTotalPatients").textContent = docBookings.length;
+        document.getElementById("statWaitingPatients").textContent = docBookings.filter(b => b.status === "Pending" || b.status === "Approved").length;
+
+        const tableBody = document.getElementById("doctorBookingsTable");
+        const emptyState = document.getElementById("emptyStateDoc");
+
+        tableBody.innerHTML = "";
+
+        if (docBookings.length === 0) {
+          emptyState.style.display = "block";
+          return;
+        } else {
+          emptyState.style.display = "none";
+        }
+
+        docBookings.forEach(b => {
+          const tr = document.createElement("tr");
+          let statusBadge = "";
+          if (b.status === "Pending") statusBadge = '<span style="background-color: #fef3c7; color: #d97706; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">PENDING</span>';
+          else if (b.status === "Approved") statusBadge = '<span style="background-color: #d1fae5; color: #059669; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">APPROVED</span>';
+          else if (b.status === "Completed") statusBadge = '<span style="background-color: var(--primary-alpha); color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">COMPLETED</span>';
+          else statusBadge = '<span style="background-color: var(--danger-light); color: var(--danger); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600;">CANCELED</span>';
+
+          let actions = "";
+          if (b.status === "Pending") {
+            actions += '<button class="btn btn-primary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="updateStatus(\'' + b.id + '\', \'Approved\')"><i class="fa-solid fa-check"></i> Setujui</button> ';
+          }
+          if (b.status === "Approved") {
+            actions += '<button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="updateStatus(\'' + b.id + '\', \'Completed\')"><i class="fa-solid fa-circle-check"></i> Selesai Periksa</button> ';
+          }
+          if (b.status !== "Completed" && b.status !== "Canceled") {
+            actions += '<button class="btn btn-danger" style="padding: 0.35rem 0.7rem; font-size: 0.75rem; background-color: var(--danger); color: white;" onclick="updateStatus(\'' + b.id + '\', \'Canceled\')"><i class="fa-solid fa-ban"></i></button>';
+          }
+
+          tr.innerHTML = `
+            <td><strong style="color: var(--primary);">${b.bookingCode}</strong></td>
+            <td>
+              <div style="font-weight: 600; color: var(--secondary);">${b.patientName}</div>
+              <div style="font-size: 0.8rem; color: var(--text-light);">NIK: ${b.patientNik}</div>
+              <div style="font-size: 0.8rem; color: var(--text-light);"><i class="fa-brands fa-whatsapp"></i> ${b.patientPhone}</div>
+            </td>
+            <td>
+              <div>${b.date}</div>
+              <div style="font-size: 0.8rem; color: var(--text-light);">${b.time} WIB</div>
+            </td>
+            <td><strong style="font-size: 1.1rem; color: var(--primary);">${b.queueNum}</strong></td>
+            <td>
+              <span style="font-size: 0.85rem; font-weight: 600;">${b.paymentType}</span>
+              <div style="font-size: 0.75rem; color: var(--text-light);">${b.paymentStatus}</div>
+            </td>
+            <td>${statusBadge}</td>
+            <td>
+              <div style="display: flex; gap: 0.5rem;">${actions}</div>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+
+      window.updateStatus = function(bookingId, status) {
+        Database.updateBookingStatus(bookingId, status);
+        renderQueues();
+      };
+
+      renderQueues();
+    });
+  </script>
+</body>
+</html>

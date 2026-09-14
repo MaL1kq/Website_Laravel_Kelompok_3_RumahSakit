@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrasi Dokter Baru - RS Graha Medika</title>
+  <meta name="description" content="Gabung sebagai bagian dari tim dokter spesialis profesional RS Graha Medika. Daftarkan jadwal dan poliklinik Anda secara mandiri.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background: linear-gradient(135deg, hsl(195, 85%, 96%) 0%, hsl(210, 30%, 96%) 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 0;">
+
+  <div class="container" style="max-width: 600px; padding: 0 1rem;">
+    <div style="background-color: var(--bg-primary); border-radius: var(--radius-lg); padding: 3rem 2.5rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color); width: 100%;">
+      
+      <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 2.5rem; text-align: center;">
+        <a href="index.html" class="logo" style="margin-bottom: 0.75rem;">
+          <img src="images/logo.png" alt="Logo Graha Medika" style="height: 70px; width: auto;">
+          <div class="logo-text">
+            Graha Medika
+            <span>Rumah Sakit</span>
+          </div>
+        </a>
+        <h2 style="font-size: 1.5rem; color: var(--secondary-dark); margin-top: 0.5rem;">Registrasi Akun Dokter</h2>
+        <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 0.25rem;">Daftarkan diri Anda untuk menjadi bagian dari Tim Medis RSGM</p>
+      </div>
+
+      <div id="errorAlert" style="display: none; background-color: var(--danger-light); border-left: 4px solid var(--danger); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; color: var(--danger); font-size: 0.85rem;">
+        <i class="fa-solid fa-circle-exclamation" style="margin-right: 0.5rem;"></i>
+        <strong>Gagal Mendaftar:</strong> <span id="errorMsg"></span>
+      </div>
+
+      <div id="successAlert" style="display: none; background-color: var(--success-light); border-left: 4px solid var(--success); padding: 1rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; color: var(--success-dark); font-size: 0.85rem;">
+        <i class="fa-solid fa-circle-check" style="margin-right: 0.5rem; color: var(--success);"></i>
+        <strong>Pendaftaran Berhasil!</strong> Akun dokter Anda telah dibuat. Mengalihkan ke halaman login...
+      </div>
+
+      <form id="docRegisterForm">
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label for="docName">Nama Lengkap Dokter (Lengkap dengan Gelar Spesialis)</label>
+          <div style="position: relative;">
+            <input type="text" id="docName" class="input-style" placeholder="Contoh: dr. Adrian Sp.A" required style="padding-left: 2.5rem;">
+            <i class="fa-solid fa-user-doctor" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label for="docEmail">Alamat Email Resmi</label>
+            <div style="position: relative;">
+              <input type="email" id="docEmail" class="input-style" placeholder="email@grahamedika.com" required style="padding-left: 2.5rem;">
+              <i class="fa-regular fa-envelope" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="docPhone">Nomor WhatsApp Aktif</label>
+            <div style="position: relative;">
+              <input type="tel" id="docPhone" class="input-style" placeholder="Contoh: 0812345..." required style="padding-left: 2.5rem;">
+              <i class="fa-brands fa-whatsapp" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label for="docSpec">Pilih Poliklinik Spesialisasi</label>
+            <select id="docSpec" class="input-style" required>
+              <option value="">-- Pilih Spesialis --</option>
+              <option value="anak">Spesialis Anak (Pediatri)</option>
+              <option value="kandungan">Spesialis Kandungan & Kebidanan</option>
+              <option value="dalam">Spesialis Penyakit Dalam</option>
+              <option value="jantung">Spesialis Jantung & Pembuluh Darah</option>
+              <option value="bedah">Spesialis Bedah Umum</option>
+              <option value="gigi">Dokter Gigi & Mulut</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="docFee">Tarif Konsultasi Medis (Rp)</label>
+            <input type="number" id="docFee" class="input-style" placeholder="150000" min="0" step="5000" required>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 1.25rem;">
+          <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Pilih Hari Kerja Praktek (Pilih Minimal 1)</label>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;"><input type="checkbox" name="working_days" value="Senin" checked> Senin</label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;"><input type="checkbox" name="working_days" value="Selasa"> Selasa</label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;"><input type="checkbox" name="working_days" value="Rabu"> Rabu</label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;"><input type="checkbox" name="working_days" value="Kamis"> Kamis</label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;"><input type="checkbox" name="working_days" value="Jumat"> Jumat</label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;"><input type="checkbox" name="working_days" value="Sabtu"> Sabtu</label>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.25rem;">
+          <div class="form-group">
+            <label for="hoursStart">Mulai Praktek (Jam)</label>
+            <input type="time" id="hoursStart" class="input-style" value="08:00" required>
+          </div>
+          <div class="form-group">
+            <label for="hoursEnd">Selesai Praktek (Jam)</label>
+            <input type="time" id="hoursEnd" class="input-style" value="12:00" required>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <div class="form-group">
+            <label for="docPassword">Kata Sandi (Min 6 Karakter)</label>
+            <div style="position: relative;">
+              <input type="password" id="docPassword" class="input-style" placeholder="Buat kata sandi..." required minlength="6" style="padding-left: 2.5rem;">
+              <i class="fa-solid fa-lock" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="docPasswordConfirm">Konfirmasi Kata Sandi</label>
+            <div style="position: relative;">
+              <input type="password" id="docPasswordConfirm" class="input-style" placeholder="Tulis ulang..." required minlength="6" style="padding-left: 2.5rem;">
+              <i class="fa-solid fa-check" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-light);"></i>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1rem; padding: 0.85rem; margin-bottom: 1.5rem;">
+          Daftarkan Akun Dokter <i class="fa-solid fa-user-doctor"></i>
+        </button>
+
+        <p style="font-size: 0.9rem; text-align: center; color: var(--text-medium); margin-bottom: 0;">
+          Sudah memiliki akun? <a href="login.html" style="color: var(--primary); font-weight: 700;">Masuk ke Portal</a>
+        </p>
+      </form>
+    </div>
+
+    <div style="text-align: center; margin-top: 1.5rem;">
+      <a href="index.html" style="font-size: 0.9rem; color: var(--secondary-light); font-weight: 600;"><i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda</a>
+    </div>
+  </div>
+
+  <script src="database.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("docRegisterForm");
+      const errorAlert = document.getElementById("errorAlert");
+      const errorMsg = document.getElementById("errorMsg");
+      const successAlert = document.getElementById("successAlert");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        errorAlert.style.display = "none";
+
+        const name = document.getElementById("docName").value.trim();
+        const email = document.getElementById("docEmail").value.trim();
+        const phone = document.getElementById("docPhone").value.trim();
+        const spec = document.getElementById("docSpec").value;
+        const fee = parseInt(document.getElementById("docFee").value) || 150000;
+        const startH = document.getElementById("hoursStart").value;
+        const endH = document.getElementById("hoursEnd").value;
+        const pw = document.getElementById("docPassword").value;
+        const pwConfirm = document.getElementById("docPasswordConfirm").value;
+
+        const checkedDays = Array.from(document.querySelectorAll("input[name='working_days']:checked")).map(cb => cb.value);
+
+        if (checkedDays.length === 0) {
+          errorMsg.textContent = "Pilih minimal 1 hari kerja praktek.";
+          errorAlert.style.display = "block";
+          return;
+        }
+
+        if (pw.length < 6) {
+          errorMsg.textContent = "Kata sandi minimal 6 karakter.";
+          errorAlert.style.display = "block";
+          return;
+        }
+
+        if (pw !== pwConfirm) {
+          errorMsg.textContent = "Konfirmasi kata sandi tidak cocok.";
+          errorAlert.style.display = "block";
+          return;
+        }
+
+        try {
+          Database.registerDoctor({
+            name,
+            email,
+            phone,
+            spec,
+            fee,
+            workingDays: checkedDays,
+            hoursStart: startH,
+            hoursEnd: endH,
+            password: pw
+          });
+
+          successAlert.style.display = "block";
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1500);
+        } catch (err) {
+          errorMsg.textContent = err.message;
+          errorAlert.style.display = "block";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
