@@ -470,7 +470,7 @@
 
       // Load bookings list
       function loadBookings() {
-        const bookings = Database.getUserBookings(session.id);
+        const bookings = Database.getUserBookings(session);
         
         statTotalBookings.textContent = bookings.length;
         

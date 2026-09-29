@@ -513,6 +513,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const bookingData = {
         patientId: session.id,
         patientName: session.name,
+        patientEmail: session.email,
         patientNik: session.nik,
         patientDob: session.dob,
         patientPhone: session.phone,

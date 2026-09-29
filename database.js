@@ -409,9 +409,36 @@ const Database = {
     return JSON.parse(localStorage.getItem(DB_KEYS.BOOKINGS)) || [];
   },
 
-  getUserBookings(userId) {
+  getUserBookings(userOrId) {
     const bookings = this.getBookings();
-    return bookings.filter(b => b.patientId === userId);
+    if (!userOrId) {
+      userOrId = this.getSession();
+    }
+    if (!userOrId) return [];
+
+    let id = typeof userOrId === 'object' ? userOrId.id : userOrId;
+    let nik = typeof userOrId === 'object' ? userOrId.nik : null;
+    let email = typeof userOrId === 'object' ? userOrId.email : null;
+    let phone = typeof userOrId === 'object' ? userOrId.phone : null;
+    let name = typeof userOrId === 'object' ? userOrId.name : null;
+
+    const activeSession = this.getSession();
+    if (activeSession) {
+      if (!nik && activeSession.nik) nik = activeSession.nik;
+      if (!email && activeSession.email) email = activeSession.email;
+      if (!phone && activeSession.phone) phone = activeSession.phone;
+      if (!name && activeSession.name) name = activeSession.name;
+      if (!id && activeSession.id) id = activeSession.id;
+    }
+
+    return bookings.filter(b => {
+      if (id && b.patientId && b.patientId === id) return true;
+      if (nik && b.patientNik && b.patientNik === nik) return true;
+      if (email && b.patientEmail && email && b.patientEmail.toLowerCase() === email.toLowerCase()) return true;
+      if (phone && b.patientPhone && b.patientPhone === phone) return true;
+      if (name && b.patientName && name && b.patientName.trim().toLowerCase() === name.trim().toLowerCase()) return true;
+      return false;
+    });
   },
 
   createBooking(bookingData) {
@@ -421,13 +448,22 @@ const Database = {
     const bookingCode = `RSGM-${new Date().getFullYear()}-${randNum}`;
     const queueNum = 'Q-' + Math.floor(10 + Math.random() * 40);
 
+    let patientId = bookingData.patientId;
+    if (!patientId) {
+      const activeSession = this.getSession();
+      if (activeSession && activeSession.id) {
+        patientId = activeSession.id;
+      }
+    }
+
     const newBooking = {
       id,
       bookingCode,
       queueNum,
       status: 'Pending', // default status
       createdAt: new Date().toISOString(),
-      ...bookingData
+      ...bookingData,
+      patientId: patientId || bookingData.patientId
     };
 
     bookings.push(newBooking);
