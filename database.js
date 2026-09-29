@@ -23,7 +23,12 @@ const INITIAL_DOCTORS = [
   {
     id: "doc-1",
     name: "dr. Adrian Sp.A",
-    email: "adrian@grahamedika.com", password: "dokter123", role: "doctor", phone: "081234567891", email: "rian@grahamedika.com", password: "dokter123", role: "doctor", phone: "081234567892", spec: "anak", specLabel: "Spesialis Anak (Pediatri)",
+    email: "adrian@grahamedika.com",
+    password: "dokter123",
+    role: "doctor",
+    phone: "081234567891",
+    spec: "anak",
+    specLabel: "Spesialis Anak (Pediatri)",
     avatarIcon: "fa-baby-carriage",
     fee: 150000,
     rating: 4.9,
@@ -37,6 +42,10 @@ const INITIAL_DOCTORS = [
   {
     id: "doc-2",
     name: "dr. Rian Sp.A",
+    email: "rian@grahamedika.com",
+    password: "dokter123",
+    role: "doctor",
+    phone: "081234567892",
     spec: "anak",
     specLabel: "Spesialis Anak (Pediatri)",
     avatarIcon: "fa-child",
@@ -52,7 +61,12 @@ const INITIAL_DOCTORS = [
   {
     id: "doc-3",
     name: "dr. Sarah Sp.OG",
-    email: "sarah@grahamedika.com", password: "dokter123", role: "doctor", phone: "081234567893", email: "kartika@grahamedika.com", password: "dokter123", role: "doctor", phone: "081234567894", spec: "kandungan", specLabel: "Spesialis Kandungan & Kebidanan",
+    email: "sarah@grahamedika.com",
+    password: "dokter123",
+    role: "doctor",
+    phone: "081234567893",
+    spec: "kandungan",
+    specLabel: "Spesialis Kandungan & Kebidanan",
     avatarIcon: "fa-person-pregnant",
     fee: 180000,
     rating: 4.9,
@@ -66,6 +80,10 @@ const INITIAL_DOCTORS = [
   {
     id: "doc-4",
     name: "dr. Kartika Sp.OG",
+    email: "kartika@grahamedika.com",
+    password: "dokter123",
+    role: "doctor",
+    phone: "081234567894",
     spec: "kandungan",
     specLabel: "Spesialis Kandungan & Kebidanan",
     avatarIcon: "fa-female",
@@ -145,8 +163,8 @@ function initDatabase() {
     existingDocs = JSON.parse(localStorage.getItem(DB_KEYS.DOCTORS)) || [];
   } catch (e) {}
 
-  // Re-seed if database is empty or existing doctors don't have fee property (migration)
-  const needsReseed = existingDocs.length === 0 || !existingDocs[0].hasOwnProperty('fee');
+  // Re-seed if database is empty or existing doctors don't have fee property or doc-2 missing email
+  const needsReseed = existingDocs.length === 0 || !existingDocs[0]?.hasOwnProperty('fee') || !existingDocs.find(d => d.id === 'doc-2')?.email;
 
   if (needsReseed) {
     localStorage.setItem(DB_KEYS.DOCTORS, JSON.stringify(INITIAL_DOCTORS));
